@@ -48,19 +48,20 @@ async function run(){
 // add order service:
 app.post("/addOrder",async(req,res)=>{
     const newOrder=req.body;
-    // console.log(newOrder)
+    console.log(newOrder)
     const detail=await orderCollection.insertOne(newOrder)
     res.send(detail)
 })
 app.get("/myOrders/:email",async(req,res)=>{
-    
-    const result=await orderCollection.find({email:req.params.email}).toArray();
+    const email=req.params.email
+    const query={email:req.params.email}
+    const result=await orderCollection.find(query);
     res.send(result)
 })
 // get api for manage orders:
 app.get('/myOrders',async(req,res)=>{
     const cursor=orderCollection.find({});
-    console.log(cursor)
+    // console.log(cursor)
     const orders=await cursor.toArray();
     res.json(orders)
 })
@@ -73,11 +74,29 @@ app.post('/newOrder',async(req,res)=>{
 // Deleting process for my orders:
 app.delete('/myOrders/:id',async(req,res)=>{
     const id=req.params.id
-    // console.log(id)
     const query={_id:(id)};
     const result=await orderCollection.deleteOne(query)
     res.json(result)
 })
+// Update order status:
+app.put("/update/:id",async(req,res)=>{
+    const id=req.params.id;
+    const updatedInfo=req.body;
+    // console.log(updatedInfo)
+    const filter={_id:ObjectId(id)}
+    // console.log(filter)
+    const updatedDoc={
+        $set:{
+            status:updatedInfo.approved
+        }
+        
+    }
+    // console.log(updatedDoc)
+   const result=await orderCollection.updateOne(filter,updatedDoc)
+   res.send(result)
+})
+
+
     }
     finally{
 
@@ -97,7 +116,7 @@ app.get('/',(req,res)=>{
     res.send('hello traveller')
 })
 app.get('/hello',(req,res)=>{
-    res.send('hello traveller')
+    res.send('new')
 })
 
 app.listen(port,()=>{
