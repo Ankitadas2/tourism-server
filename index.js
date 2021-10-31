@@ -53,10 +53,8 @@ app.post("/addOrder",async(req,res)=>{
     res.send(detail)
 })
 app.get("/myOrders/:email",async(req,res)=>{
-    const email=req.params.email
-    const query={email:req.params.email}
-    const result=await orderCollection.find(query);
-    res.send(result)
+    const result=await orderCollection.find({email:req.params.email}).toArray();
+    res.json(result)
 })
 // get api for manage orders:
 app.get('/myOrders',async(req,res)=>{
