@@ -12,5 +12,7 @@
  * This website create all information of  all tarvelers
  * Its helps all the tarvelers who want to knows all the details about our services
  * Firstly all users should be logged in.
+ * Then user can be booked their ticket for destination.
+ * Users see their booking list and also delete own booking.
  * You can book ticket through this website information.
  * All the information is given this website.
